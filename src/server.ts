@@ -1,4 +1,3 @@
-import cors from 'cors';
 import express from 'express';
 import {sequelize} from './sequelize';
 
@@ -18,23 +17,17 @@ import {V0_USER_MODELS} from './controllers/v0/model.index';
 
   app.use(bodyParser.json());
 
-  app.use(cors({
-    allowedHeaders: [
-      'Origin', 'X-Requested-With',
-      'Content-Type', 'Accept',
-      'X-Access-Token', 'Authorization',
-    ],
-    methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
-    origin: config.url,
-  }));
 
   app.use('/api/v0/', IndexRouter);
 
   // Root URI call
   app.get( '/', async ( req, res ) => {
+    var origin = req.get('origin');
+    var host = req.get('host');
+    console.log( `The origin is : ${origin}` );
+    console.log( `The host is : ${host}` );
     res.send( '/api/v0/' );
   } );
-
 
   // Start the Server
   app.listen( port, () => {
